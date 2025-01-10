@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
     const [dataNewEvent, setDataNewEvent] = useState([])
@@ -12,8 +12,12 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
 
     const insertGuest = (e) =>{
         setGuests([...guests,email])
-        
     }
+    const removeGuest = (index) =>{
+        const updatedGuests = guests.filter((element, i) => i !== index);
+        setGuests(updatedGuests)
+    }
+
     const handlechange = (e) => {
         setDataNewEvent({...dataNewEvent, [e.target.name]: e.target.value});
     }
@@ -34,7 +38,7 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
             <Modal.Title>Create New Event</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="container">
+                <div className="container text-xs">
                     <div className="row">
                         <label>Priority</label>
                         <select name="priority" className="form-select" required onChange={handlechange}>
@@ -74,12 +78,20 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
                     <div className="row">
                         <div className="col-12">
                             <label>Guests</label>
+                            {guests.length>0 &&
+                            guests.map((item, index)=>(
+                            <div className="row" key={index}>
+                                <div className="col-10">{item}/{index}</div>
+                                <div className="col-2"><FontAwesomeIcon className="cursor-pointer hover:text-red-600" icon={faTrash} title="Remove this Guest" onClick={()=>removeGuest(index)}></FontAwesomeIcon></div>
+                            </div>
+                            ))}
                             <div className="row">
                                 <div className="col-10">
                                     <input type="hidden" name="guests"  onChange={handlechange} value={guests}/>
+                                    
                                     <input type="email" name="email" className="form-control col-6" onChange={handleEmail} value={email}/>
                                 </div>
-                                <div className="col-2">
+                                <div className="col-2 p-2">
                                     <FontAwesomeIcon icon={faCirclePlus} className="text-blue-800 hover:text-gray-600 cursor-pointer" onClick={insertGuest}/>
                                 </div>
                             </div>
