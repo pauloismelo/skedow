@@ -46,7 +46,7 @@ const AutocompleteInput = () => {
   };
   
   return (
-    <LoadScript googleMapsApiKey="AIzaSyA85X2MGutTcKYMg8rBK8ARu12KewVQnYA" libraries={libraries} onLoad={handleApiLoad}>
+    <LoadScript googleMapsApiKey="" libraries={libraries} onLoad={handleApiLoad}>
       <div style={{ position: 'relative' }} className="row">
         <label>Location</label>
         <input
