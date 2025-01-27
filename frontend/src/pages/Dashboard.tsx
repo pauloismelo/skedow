@@ -81,13 +81,15 @@ function Dashboard() {
         let hour = new Date(eventInfo.event.start).getHours();
         let title = hour!=0 && `${new Date(eventInfo.event.start).getHours()}:${new Date(eventInfo.event.start).getMinutes()}`;
 
-        let eventColor = 'green';  // Cor padrão
+        let eventColor = 'green';
+        let fontColor = 'white';  // Cor padrão
         switch (eventInfo.event.extendedProps.priority) {
             case 'high':
                 eventColor = 'red';
                 break;
             case 'medium':
                 eventColor = 'yellow';
+                fontColor = 'black';
                 break;
             case 'low':
                 eventColor = 'green';
@@ -95,8 +97,9 @@ function Dashboard() {
         }
         
         return (
-        <div style={{ backgroundColor: eventColor, color: 'white' }}> 
-            <b>{title} </b>
+        <div style={{ backgroundColor: eventColor, color: fontColor }}> 
+            {title && (<b>{title} <br /></b>) }
+           
             <i>{eventInfo.event.title}</i>
         </div>
         )

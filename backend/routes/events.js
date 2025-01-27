@@ -1,6 +1,9 @@
 const app = require('express')
 const router = app.Router();
 
+const sendEventEmail = require('../utils/sendEmailICS');
+const formatDateToICS = require('../utils/formatDateToICS');
+
 const mysql = require("mysql2")
 const db = require('../db/connection');
 
@@ -16,8 +19,12 @@ router.get(`/events`, (req,res)=>{
 
 router.post(`/new`, (req,res)=>{
     const {title, datestart, dateend, description, priority} = req.body;
-    const {timestart, timeend} = req.body || {};
+    const {timestart, timeend, guests} = req.body || {};
 
+    console.log(guests)
+    const guestsString= guests.join();
+
+    console.log(guestsString)
     let start, end;
 
     if (timestart){
@@ -32,7 +39,7 @@ router.post(`/new`, (req,res)=>{
         end = new Date(dateend+ ' 00:00:00');
     }
 
-    db.query(`insert into TB_EVENTS (title, start, end,description,priority) values (?,?,?,?,?)`, [title, start, end, description, priority], (error, result)=>{
+    db.query(`insert into TB_EVENTS (title, start, end, description, priority, guests) values (?,?,?,?,?,?)`, [title, start, end, description, priority, guestsString], (error, result)=>{
         if (error) res.status(500).json({msg: 'Error in insert event', type: 'error'});
         if (result) {
             db.query('select * from TB_EVENTS where id=?', [result.insertId], (error2, result2)=>{
@@ -48,7 +55,23 @@ router.post(`/new`, (req,res)=>{
                         datereg: result2[0].datereg,
                         userreg: result2[0].userreg,
                         priority: result2[0].priority,
+                        guests: result2[0].guests,
                     }
+
+                   
+
+                    // Detalhes do evento
+                    const eventDetails = {
+                        title: result2[0].title,
+                        description: result2[0].description,
+                        location: "Sala de Reunioes",
+                        startTime: formatDateToICS(result2[0].start), // UTC: YYYYMMDDTHHMMSSZ
+                        endTime: formatDateToICS(result2[0].end),   // UTC: YYYYMMDDTHHMMSSZ
+                        guests: result2[0].guests,
+                    };
+
+                    // Enviar o e-mail
+                    sendEventEmail("pauloisaquecpd@hotmail.com", eventDetails);
 
                     res.status(200).json({msg: 'Event inserted successfully', type: 'success', event: newReg})
                 }
