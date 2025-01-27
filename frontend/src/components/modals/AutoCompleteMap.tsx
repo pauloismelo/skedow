@@ -1,4 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
+
+import { useRef, useState } from 'react';
 import { Libraries, LoadScript } from '@react-google-maps/api';
 
 const libraries:Libraries = ['places'];
@@ -8,7 +9,9 @@ const AutocompleteInput = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
 
-  
+
+  const API_MAPS = process.env.REACT_API_MAPS;
+  console.log(API_MAPS);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -41,7 +44,7 @@ const AutocompleteInput = () => {
       console.log('A biblioteca "places" foi carregada com sucesso.');
       autocompleteService.current = new window.google.maps.places.AutocompleteService();
     } else {
-      console.error('A biblioteca "places" n�o foi carregada.');
+      console.error('A biblioteca "places" nao foi carregada.');
     }
   };
   
