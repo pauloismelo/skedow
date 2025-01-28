@@ -11,7 +11,7 @@ const AutocompleteInput = () => {
 
 
   const API_MAPS = process.env.REACT_API_MAPS;
-  console.log(API_MAPS);
+  console.log("API:", API_MAPS);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
