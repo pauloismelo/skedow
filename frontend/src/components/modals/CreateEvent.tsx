@@ -95,10 +95,10 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
                             <label>Event type</label>
                             <ul>
                                 <li>
-                                    <Radio name="tipo" value="tarefa" onchange={handlechange} title="Tarefa" />
+                                    <Radio name="type" value="tarefa" onchange={handlechange} title="Tarefa" />
                                 </li>
                                 <li>
-                                    <Radio name="tipo" value="evento" onchange={handlechange} title="Evento" />
+                                    <Radio name="type" value="evento" onchange={handlechange} title="Evento" />
                                 </li>
                             </ul>
                         </div>

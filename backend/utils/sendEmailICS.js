@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEventEmail = async (to, eventDetails) => {
-    const { title, description, location, startTime, endTime, guests } = eventDetails;
+    const { type, title, description, location, startTime, endTime, guests } = eventDetails;
 
     // Substituir caracteres inválidos ou problemáticos no texto
     const sanitizedDescription = description.replace(/[^\x20-\x7E]/g, "");
@@ -36,14 +36,14 @@ END:VEVENT
 END:VCALENDAR
     `.trim();
 
-    console.log(icsContent);
+    //console.log(icsContent);
     // Configura��o do e-mail
     const mailOptions = {
         from: '"Compacta Schedule" <noreply@compactainforma.com.br>',
         to: to,
         cc: guests,
         subject: `Convite: ${title}`,
-        text: `Voce foi convidado para o evento "${title}". Confira os detalhes no convite anexado.`,
+        text: `Voce foi convidado para o ${type} "${title}". Confira os detalhes no convite anexado.`,
         attachments: [
             {
                 filename: "convite.ics", // Nome do arquivo

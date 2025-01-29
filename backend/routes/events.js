@@ -18,13 +18,20 @@ router.get(`/events`, (req,res)=>{
 
 
 router.post(`/new`, (req,res)=>{
-    const {title, datestart, dateend, description, priority} = req.body;
+
+    console.log(req.body)
+    const {title, datestart, dateend, description, priority, type, location} = req.body;
     const {timestart, timeend, guests} = req.body || {};
+    
+    let guestsString ='';
+    if (guests){
+        guestsString= guests.join();
+        //console.log(guestsString)
+    }else{
+        if (error) res.status(500).json({msg: 'You need fill at least one guest', type: 'error'});
+    }
 
-    console.log(guests)
-    const guestsString= guests.join();
 
-    console.log(guestsString)
     let start, end;
 
     if (timestart){
@@ -39,7 +46,7 @@ router.post(`/new`, (req,res)=>{
         end = new Date(dateend+ ' 00:00:00');
     }
 
-    db.query(`insert into TB_EVENTS (title, start, end, description, priority, guests) values (?,?,?,?,?,?)`, [title, start, end, description, priority, guestsString], (error, result)=>{
+    db.query(`insert into TB_EVENTS (title, start, end, description, priority, guests, type, location) values (?,?,?,?,?,?,?,?)`, [title, start, end, description, priority, guestsString, type, location], (error, result)=>{
         if (error) res.status(500).json({msg: 'Error in insert event', type: 'error'});
         if (result) {
             db.query('select * from TB_EVENTS where id=?', [result.insertId], (error2, result2)=>{
@@ -48,6 +55,7 @@ router.post(`/new`, (req,res)=>{
                     //Create a new object, because I don't return a array
                     const newReg = {
                         id: result.insertId,
+                        type: result2[0].type,
                         title: result2[0].title,
                         start: result2[0].start,
                         end: result2[0].end,
@@ -55,6 +63,7 @@ router.post(`/new`, (req,res)=>{
                         datereg: result2[0].datereg,
                         userreg: result2[0].userreg,
                         priority: result2[0].priority,
+                        location: result2[0].location,
                         guests: result2[0].guests,
                     }
 
@@ -62,16 +71,17 @@ router.post(`/new`, (req,res)=>{
 
                     // Detalhes do evento
                     const eventDetails = {
+                        type: result2[0].type,
                         title: result2[0].title,
                         description: result2[0].description,
-                        location: "Sala de Reunioes",
+                        location: result2[0].location,
                         startTime: formatDateToICS(result2[0].start), // UTC: YYYYMMDDTHHMMSSZ
                         endTime: formatDateToICS(result2[0].end),   // UTC: YYYYMMDDTHHMMSSZ
                         guests: result2[0].guests,
                     };
 
                     // Enviar o e-mail
-                    sendEventEmail("pauloisaquecpd@hotmail.com", eventDetails);
+                    sendEventEmail(guestsString, eventDetails);
 
                     res.status(200).json({msg: 'Event inserted successfully', type: 'success', event: newReg})
                 }

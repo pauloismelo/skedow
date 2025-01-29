@@ -59,6 +59,7 @@ const AutocompleteInput = ({onchange}:AutoCompletProps) => {
         <label>Location</label>
         <input
           type="text"
+          name="location"
           value={inputValue}
           onChange={
             (event) => {
