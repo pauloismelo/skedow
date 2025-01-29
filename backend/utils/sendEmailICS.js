@@ -1,5 +1,7 @@
 const nodemailer = require("nodemailer");
 
+
+
 const transporter = nodemailer.createTransport({
     host: "mail.compactainforma.com.br", // Substitua pelo servidor SMTP do seu provedor
     port: 587, // Porta comum para SMTP com STARTTLS
@@ -38,12 +40,16 @@ END:VCALENDAR
 
     //console.log(icsContent);
     // Configura��o do e-mail
+
+    const html = "<table width='650' border='0'><tr><td height=30 bgcolor='#031380'>Convite</td></tr><tr><td>Voce foi convidado para o "+type+" <strong>"+title+"</strong>. Confira os detalhes abaixo ou no convite anexado.<br><br>Data: <strong>"+startTime+"</strong><br>Localização: <strong>"+location+"</strong><br>Convidados: <strong>"+guests+"</strong><br>Descrição: <strong>"+description+"</strong><br></td></tr><tr><td></td></tr></table>";
+
+
     const mailOptions = {
         from: '"Compacta Schedule" <noreply@compactainforma.com.br>',
         to: to,
         cc: guests,
         subject: `Convite: ${title}`,
-        text: `Voce foi convidado para o ${type} "${title}". Confira os detalhes no convite anexado.`,
+        text: html,
         attachments: [
             {
                 filename: "convite.ics", // Nome do arquivo
