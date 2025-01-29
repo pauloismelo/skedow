@@ -8,6 +8,7 @@ import { faCirclePlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 
 import App from './AutoCompleteMap';
+import Radio from "../Radio";
 
 
 
@@ -37,27 +38,20 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
 
    
     // Date 
-
     const insertGuest = (e) =>{
-
         if (email){
             const updatedGuests = [...guests, email];
-
             setGuests(updatedGuests)
             setDataNewEvent({...dataNewEvent, guests: updatedGuests});
             setEmail('');
-
         }else{
             toast.error('Fill the guest input!',{
                 theme: process.env.TOAST_THEME,
                 autoClose: 2500,
-                
             });
-            
         }
-
-        
     }
+
     const removeGuest = (index) =>{
         const updatedGuests = guests.filter((element, i) => i !== index);
         setGuests(updatedGuests)
@@ -65,6 +59,7 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
 
     const handlechange = (e) => {
         setDataNewEvent({...dataNewEvent, [e.target.name]: e.target.value});
+        console.log(dataNewEvent);
     }
 
     const handleEmail = (e) => {
@@ -73,6 +68,7 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
 
     const handleOnSubmit = (e) =>{
         e.preventDefault();
+
         handleSubmit(dataNewEvent)
     }
 
@@ -85,21 +81,35 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
             <Modal.Body>
                 <div className="container text-xs">
                     <div className="row">
-                        <label>Priority</label>
-                        <select name="priority" className="form-select" required onChange={handlechange}>
-                            <option value=''>Select one option...</option>
-                            <option value='high' className="bg-red-600 text-white">High</option>
-                            <option value='medium' className="bg-yellow-600 text-white">Medium</option>
-                            <option value='low' className="bg-green-600 text-white">Low</option>
+                        <div className="col-6">
+                            <label>Priority</label>
+                            <select name="priority" className="form-select" required onChange={handlechange}>
+                                <option value=''>Select one option...</option>
+                                <option value='high' className="bg-red-600 text-white">High</option>
+                                <option value='medium' className="bg-yellow-600 text-white">Medium</option>
+                                <option value='low' className="bg-green-600 text-white">Low</option>
 
-                        </select>
+                            </select>
+                        </div>
+                        <div className="col-6 align-middle">
+                            <label>Event type</label>
+                            <ul>
+                                <li>
+                                    <Radio name="tipo" value="tarefa" onchange={handlechange} title="Tarefa" />
+                                </li>
+                                <li>
+                                    <Radio name="tipo" value="evento" onchange={handlechange} title="Evento" />
+                                </li>
+                            </ul>
+                        </div>
+                        
                     </div>
                     <div className="row">
                         <label>Title</label>
                         <input type="text" name="title" className="form-control" onChange={handlechange} required/>
                     </div>
                     <div className="row">
-                        <App/>
+                        <App onchange={handlechange}/>
                     </div>
                     <div className="row">
                         <div className="col-6">

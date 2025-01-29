@@ -4,18 +4,23 @@ import { Libraries, LoadScript } from '@react-google-maps/api';
 
 const libraries:Libraries = ['places'];
 
-const AutocompleteInput = () => {
+interface AutoCompletProps{
+  onchange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const AutocompleteInput = ({onchange}:AutoCompletProps) => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
 
 
-  const API_MAPS = process.env.REACT_API_MAPS;
-  console.log("API:", API_MAPS);
+  const API_MAPS = process.env.REACT_APP_API_MAPS;
+  //console.log(API_MAPS)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
+    
 
     // Quando o usu?rio digitar, buscar as sugest?es
     if (value  && autocompleteService.current) {
@@ -41,21 +46,25 @@ const AutocompleteInput = () => {
 
   const handleApiLoad = () => {
     if (window.google && window.google.maps.places) {
-      console.log('A biblioteca "places" foi carregada com sucesso.');
+      //console.log('A biblioteca "places" foi carregada com sucesso.');
       autocompleteService.current = new window.google.maps.places.AutocompleteService();
     } else {
-      console.error('A biblioteca "places" nao foi carregada.');
+      //console.error('A biblioteca "places" nao foi carregada.');
     }
   };
   
   return (
-    <LoadScript googleMapsApiKey="" libraries={libraries} onLoad={handleApiLoad}>
+    <LoadScript googleMapsApiKey={API_MAPS} libraries={libraries} onLoad={handleApiLoad}>
       <div style={{ position: 'relative' }} className="row">
         <label>Location</label>
         <input
           type="text"
           value={inputValue}
-          onChange={handleInputChange}
+          onChange={
+            (event) => {
+              handleInputChange(event);
+              onchange(event);
+            }}
           placeholder="Digite um endereço ou local"
           
           className="form-control"
