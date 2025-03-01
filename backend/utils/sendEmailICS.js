@@ -39,7 +39,7 @@ END:VCALENDAR
     `.trim();
 
     //console.log(icsContent);
-    // Configura��o do e-mail
+    // configuration e-mail
 
     const html = "<table width='650' border='0'><tr><td height=30 bgcolor='#031380'>Convite</td></tr><tr><td>Voce foi convidado para o "+type+" <strong>"+title+"</strong>. Confira os detalhes abaixo ou no convite anexado.<br><br>Data: <strong>"+startTime+"</strong><br>Localização: <strong>"+location+"</strong><br>Convidados: <strong>"+guests+"</strong><br>Descrição: <strong>"+description+"</strong><br></td></tr><tr><td></td></tr></table>";
 
@@ -53,7 +53,7 @@ END:VCALENDAR
         attachments: [
             {
                 filename: "convite.ics", // Nome do arquivo
-                content: icsContent,    // Conte�do ICS
+                content: icsContent,    // Content ICS
             },
         ],
     };

@@ -97,10 +97,10 @@ function Dashboard() {
         }
         
         return (
-        <div style={{ backgroundColor: eventColor, color: fontColor }}> 
+        <div style={{ backgroundColor: eventColor, color: fontColor, overflow: "hidden" }}> 
             {title && (<b>{title} <br /></b>) }
            
-            <i>{eventInfo.event.title}</i>
+            <small>{eventInfo.event.title}</small>
         </div>
         )
     }
@@ -121,7 +121,7 @@ function Dashboard() {
                 </div>
 
                 <div className="h-full flex-1 flex">
-                    <div className="w-2/4 p-2 min-h-full">
+                    <div className="w-2/4 p-2 min-h-full overflow-hidden">
                         <FullCalendar plugins={[dayGridPlugin, timeGridPlugin]} initialView='dayGridMonth' 
                         weekends={true}
                         events={events}
@@ -156,29 +156,24 @@ function Dashboard() {
                         <div className="flex-1 flex flex-col space-y-4 pl-4">
                             {sortedEvents &&
                              sortedEvents.map((item, index)=>(
-                                <>
+                                
                                 <div key={index} className='flexspace-x-4 border-b-2 border-gray-400 border-dashed'>
                                     
-                                        <div className="flex-1 font-extrabold">{item.title}</div>
-                                        
-                                        <div className="flex-1 text-xs">
+                                    <div className="flex-1 font-extrabold">{item.title}</div>
+                                    <div className="flex-1 text-xs">
                                         From: 
                                         {new Date(item.start).getDate()}/
                                         {new Date(item.start).getMonth() + 1}/
                                         {new Date(item.start).getFullYear()} às {new Date(item.start).getHours()}:{new Date(item.start).getMinutes()}
-                                        </div>
-                                    
-                                        <div className="flex-1 text-xss">
+                                    </div>
+                                    <div className="flex-1 text-xs">
                                         To: 
                                         {new Date(item.end).getDate()}/
                                         {new Date(item.end).getMonth() + 1}/
                                         {new Date(item.end).getFullYear()} às {new Date(item.end).getHours()}:{new Date(item.end).getMinutes()}
-                                        </div>
+                                    </div>
                                     
                                 </div>
-                               
-                                </>
-                                
                              ))
 
                             }

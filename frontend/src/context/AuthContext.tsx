@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 type Event = {
-    
+    id?: string;
     title: string;
     start: string;
     end: string;

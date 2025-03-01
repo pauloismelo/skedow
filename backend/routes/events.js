@@ -26,9 +26,9 @@ router.post(`/new`, (req,res)=>{
     let guestsString ='';
     if (guests){
         guestsString= guests.join();
-        //console.log(guestsString)
+        console.log(guestsString)
     }else{
-        if (error) res.status(500).json({msg: 'You need fill at least one guest', type: 'error'});
+        res.status(500).json({msg: 'You need fill at least one guest', type: 'error'});
     }
 
 
@@ -67,8 +67,7 @@ router.post(`/new`, (req,res)=>{
                         guests: result2[0].guests,
                     }
 
-                   
-
+                
                     // Detalhes do evento
                     const eventDetails = {
                         type: result2[0].type,

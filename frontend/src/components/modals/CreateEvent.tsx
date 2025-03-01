@@ -35,8 +35,6 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
         setDataNewEvent({...dataNewEvent, 'timestart': currentTime})
     },[])
     
-
-   
     // Date 
     const insertGuest = (e) =>{
         if (email){
@@ -59,7 +57,6 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
 
     const handlechange = (e) => {
         setDataNewEvent({...dataNewEvent, [e.target.name]: e.target.value});
-        console.log(dataNewEvent);
     }
 
     const handleEmail = (e) => {
@@ -119,7 +116,7 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
                         </div>
                         <div className="col-6">
                             <label>Time Start</label>
-                            <input type="time" name="timestart" className="form-control col-6" value={currentTime} onChange={handlechange}/>
+                            <input type="time" name="timestart" className="form-control col-6" placeholder={currentTime} onChange={handlechange}/>
                         </div>
                     </div>
                     <div className="row">
@@ -130,7 +127,7 @@ function CreateEvent({showModal, handleCloseModal, handleSubmit}) {
                         </div>
                         <div className="col-6">
                             <label>Time End</label>
-                            <input type="time" name="timeend" className="form-control col-6" min={currentTime} onChange={handlechange}/>
+                            <input type="time" name="timeend" className="form-control col-6"  onChange={handlechange}/>
                         </div>
                     </div>
                     <div className="row">
